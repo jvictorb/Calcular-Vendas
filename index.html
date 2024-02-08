@@ -261,11 +261,19 @@
 
     function gerarImpressao(iterator) {
       let html = `
-          <html>
+         <html>
             <style>
-              @media print{@page {size: landscape}}
+              @media print{
+		table {
+        	width: 99vw;
+      		}
+      		td {
+     	   	padding: 0px;
+      		}
+		@page {size: landscape}
+		}
             </style>
-            <body style="display: grid; justify-content: center;">
+            <body>
               <h1 style="text-align: center">Nome colaborador: ${iterator}</h1>
               <table border style="margin-top: 25px">
                 <tbody>
