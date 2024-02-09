@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Calcular Taxa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <style>
+      .title {
+        text-align: center;
+      }
+      section {
+        margin-bottom: 20px;
+      }
+      table {
+        width: 90vw;
+      }
+      td {
+        padding: 5px;
+      }
+      body {
+        display: grid;
+        justify-content: center;
+      }
+      .positivo {
+        color: green;
+      }
+      .negativo {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Espaço Arte</h1>
+    <section>
+      <h2>Configuração de taxas</h2>
+      <select id="taxas" style="margin-bottom: 20px">
+        <option value="TAXALOJA">Taxa loja</option>
+        <option value="DEBITOUTROS">Débito Visa/Master</option>
+        <option value="DEBITELO">Débito ELO</option>
+        <option value="CREDITOUTROS">Crédito Visa/Master</option>
+        <option value="CREDITELO">Crédito ELO</option>
+      </select>
+      <input id="valorTaxa" placeholder="Valor taxa" />
+      <button onclick="salvarTaxa()">Salvar</button>
+      <div id="tabelaTaxas"></div>
+    </section>
+    <section>
+      <h2>Adicionar colaborador/vendas</h2>
+      <input id="namePerson" placeholder="Nome colaborador" />
+      <button onclick="salvarProfissional()">Salvar</button>
+    </section>
+    <section>
+      <table border class="table">
+        <thead>
+          <td>Nome</td>
+          <td>Valor</td>
+          <td>Tipo pagamento</td>
+          <td>Salvar</td>
+          <td>Imprimir</td>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Resultado de vendas</h2>
+      <div id="resultRegisters"></div>
+    </section>
+  </body>
+  <script>
+    let typesMoney = {
+      MONEY: {
+        nome: "Dinheiro/PIX",
+        taxa: 0,
+      },
+      DEBITOUTROS: {
+        nome: "Débito Visa/Master",
+        taxa: 1.37,
+      },
+      DEBITELO: {
+        nome: "Débito ELO",
+        taxa: 2.58,
+      },
+      CREDITOUTROS: {
+        nome: "Crédito Visa/Master",
+        taxa: 3.15,
+      },
+      CREDITELO: {
+        nome: "Crédito ELO",
+        taxa: 4.91,
+      },
+    };
+    let persons = [];
+    let vendas = [];
+    let porcentagemLoja = 10;
+
+    function salvarProfissional() {
+      const name = document.getElementById("namePerson").value;
+
+      if (persons.filter((e) => e === name).length > 0) {
+        alert("Já existe esse colaborador!");
+        return false;
+      }
+
+      if (name) {
+        persons.push(name);
+        let html = ``;
+        for (const iterator of persons) {
+          html += `<tr>
+            <td>${iterator}</td>
+            <td><input id="${iterator}valor" placeholder="Valor"/></td>
+            <td>
+              <select id="${iterator}tipo">
+                <option value="MONEY">Dinheiro/PIX</option>
+                <option value="DEBITOUTROS">Débito Visa/Master</option>
+                <option value="DEBITELO">Débito ELO</option>
+                <option value="CREDITOUTROS">Crédito Visa/Master</option>
+                <option value="CREDITELO">Crédito ELO</option>
+              </select>
+            </td>
+            <td><button onclick="salvarVenda('${iterator}')">Salvar</button></td>
+            <td><button onclick="gerarImpressao('${iterator}')">Imprimir</button></td>
+          </tr>`;
+        }
+        document.getElementById("tableBody").innerHTML = html;
+      }
+    }
+
+    function salvarTaxa() {
+      const idTaxa = document.getElementById("taxas").value;
+      const valorTaxa = document.getElementById("valorTaxa").value;
+
+      if (idTaxa && valorTaxa) {
+        if (idTaxa === "TAXALOJA") {
+          porcentagemLoja = Number(formatValue(valorTaxa));
+        } else {
+          typesMoney[idTaxa].taxa = Number(formatValue(valorTaxa));
+        }
+        gerarTabelaTaxa();
+      }
+    }
+
+    function salvarVenda(id) {
+      const valorVenda = formatValue(
+        document.getElementById(`${id}valor`).value || ""
+      );
+      const tipo = document.getElementById(`${id}tipo`).value;
+
+      if (valorVenda && tipo) {
+        const valorLoja = valorVenda * (porcentagemLoja / 100);
+        const valorTaxaCartão = valorVenda * (typesMoney[tipo].taxa / 100);
+        const aux = valorLoja + valorTaxaCartão;
+        const valorMenosTaxa = valorVenda - aux;
+        
+
+        vendas.push({
+          id,
+          valor: valorVenda,
+          tipo: tipo,
+          taxa: typesMoney[tipo].taxa,
+          valorTaxaCartão,
+          valorMenosTaxa,
+          valorLoja,
+          valorMenosLoja: aux,
+          valorColaborador: valorMenosTaxa,
+        });
+
+        document.getElementById(`${id}valor`).value = "";
+        document.getElementById(`${id}tipo`).value = "MONEY";
+
+        gerarTabelas();
+      }
+    }
+
+    function gerarTabelaTaxa() {
+      const html = `<table border>
+          <thead>
+            <td>Dinheiro/PIX</td>
+            <td>Débito Visa/Master</option>
+            <td>Débito ELO</td>
+            <td>Crédito Visa/Master</td>
+            <td>Crédito ELO</td>
+            <td>Taxa loja</td>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${typesMoney["MONEY"].taxa}%</td>
+              <td>${typesMoney["DEBITOUTROS"].taxa}%</td>
+              <td>${typesMoney["DEBITELO"].taxa}%</td>
+              <td>${typesMoney["CREDITOUTROS"].taxa}%</td>
+              <td>${typesMoney["CREDITELO"].taxa}%</td>
+              <td>${porcentagemLoja}%</td>
+            </tr>
+          </tbody>
+        </table>
+          `;
+
+      document.getElementById("tabelaTaxas").innerHTML = html;
+    }
+
+    function remover(position) {
+      vendas = vendas.filter((e, index) => index != position);
+
+      gerarTabelas();
+    }
+
+    function gerarTabelas() {
+      let html = ``;
+
+      for (const iterator of persons) {
+        html += `
+          <table border style="margin-bottom: 25px">
+            <thead>
+              <td style="color:blue">Nome colaborador: ${iterator}</td>
+            </thead>
+            <tbody>
+              <tr style="font-weight: bold;">
+                <td>Valor venda</td>
+                <td>Tipo venda</td>
+                <td>Taxa loja</td>
+                <td>Valor loja</td>
+                <td>Taxa do cartão</td>
+                <td>Valor taxa</td>
+                <td>Valor colaborador</td>
+                <td>Remover</td>
+              </tr>`;
+
+        for (const position in vendas) {
+          if (vendas[position].id === iterator) {
+            html += `
+                <tr>
+                    <td class="positivo">+ R$${Number(
+                      vendas[position].valor
+                    ).toFixed(2)}</td>
+                    <td>${typesMoney[vendas[position].tipo].nome}</td>
+                    <td>${porcentagemLoja}%</td>
+                    <td class="negativo">- R$${Number(
+                      vendas[position].valorLoja
+                    ).toFixed(2)}</td>
+                    <td>${vendas[position].taxa}%
+                    </td>
+                    <td class="negativo">- R$${Number(
+                      vendas[position].valorTaxaCartão
+                    ).toFixed(2)}</td>
+                    <td class="positivo">+ R$${Number(
+                      vendas[position].valorColaborador
+                    ).toFixed(2)}</td>
+                    <td><button onclick="remover(${position})">Remover</button></td>
+                </tr>`;
+          }
+        }
+
+        html += `
+            </tbody>
+            <tfoot style="font-weight: bold;">
+              <tr>
+                <td>Total colaborador: R$${Number(
+                  vendas
+                    .filter((e) => e.id === iterator)
+                    .map((e) => e.valorColaborador)
+                    .reduce((accumulator, current) => accumulator + current, 0)
+                ).toFixed(2)}</td>
+                <td style="">Total loja: R$${Number(
+                  vendas
+                    .filter((e) => e.id === iterator)
+                    .map((e) => e.valorLoja)
+                    .reduce((accumulator, current) => accumulator + current, 0)
+                ).toFixed(2)}</td>
+              </tr>
+            </tfoot>
+          </table> `;
+      }
+
+      document.getElementById("resultRegisters").innerHTML = html;
+    }
+
+    function gerarImpressao(iterator) {
+      let html = `
+          <html>
+            <style>
+              @media print{
+                table {
+                  width: 99vw;
+                }
+                td {
+                  padding: 0px;
+                }
+                @page {
+                  size: landscape
+                }
+                .positivo {
+                  color: green;
+                }
+                .negativo {
+                  color: red;
+                }
+              }
+            </style>
+            <body>
+              <h1 style="text-align: center">Nome colaborador: ${iterator}</h1>
+              <table border style="margin-top: 25px">
+                <tbody>
+                  <tr style="font-weight: bold;">
+                    <td>Valor venda</td>
+                    <td>Tipo venda</td>
+                    <td>Taxa loja</td>
+                    <td>Valor loja</td>
+                    <td>Taxa do cartão</td>
+                    <td>Valor taxa</td>
+                    <td>Valor colaborador</td>
+                  </tr>`;
+
+      for (const position in vendas) {
+        if (vendas[position].id === iterator) {
+          html += `
+                    <tr>
+                      <td class="positivo">+ R$${Number(
+                        vendas[position].valor
+                      ).toFixed(2)}</td>
+                      <td>${typesMoney[vendas[position].tipo].nome}</td>
+                      <td>${porcentagemLoja}%</td>
+                      <td class="negativo">- R$${Number(
+                        vendas[position].valorLoja
+                      ).toFixed(2)}</td>
+                      <td>${vendas[position].taxa}%
+                    </td>
+                      </td>
+                      <td class="negativo">- R$${Number(
+                        vendas[position].valorTaxaCartão
+                      ).toFixed(2)}</td>
+                      <td class="positivo">+ R$${Number(
+                        vendas[position].valorColaborador
+                      ).toFixed(2)}</td>
+                    </tr>`;
+        }
+      }
+
+      html += `
+                </tbody>
+                <tfoot style="font-weight: bold;">
+                  <tr>
+                    <td>Total colaborador: R$${Number(
+                      vendas
+                        .filter((e) => e.id === iterator)
+                        .map((e) => e.valorColaborador)
+                        .reduce(
+                          (accumulator, current) => accumulator + current,
+                          0
+                        )
+                    ).toFixed(2)}</td>
+                    <td style="">Total loja: R$${Number(
+                      vendas
+                        .filter((e) => e.id === iterator)
+                        .map((e) => e.valorLoja)
+                        .reduce(
+                          (accumulator, current) => accumulator + current,
+                          0
+                        )
+                    ).toFixed(2)}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </body>
+          </html>`;
+
+      let WinPrint = window.open("");
+      WinPrint.document.write(html);
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    }
+
+    function formatValue(valor) {
+      return valor.replace(",", ".");
+    }
+
+    gerarTabelaTaxa();
+  </script>
+</html>
