@@ -3,10 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Calcular Taxa</title>
+    <title>Gestão de Pagamentos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="icon" href="./Icon.png" type="image/x-icon">
     <style>
+      header {
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+
+.logo2 {
+    text-align: center;
+    font-size: 30px;
+}
       .title {
         text-align: center;
       }
@@ -15,6 +36,8 @@
       }
       table {
         width: 90vw;
+        
+        border-collapse: collapse;
       }
       td {
         padding: 5px;
@@ -31,8 +54,14 @@
       }
     </style>
   </head>
+  <header>
+    <div class="header-container">
+        
+        <img src="./Logo2.png" alt="Imagem Centralizada" class="logo2">
+    </div>
+</header>
   <body>
-    <h1 class="title">Espaço Arte</h1>
+    
     <section>
       <h2>Configuração de taxas</h2>
       <select id="taxas" style="margin-bottom: 20px">
@@ -379,3 +408,4 @@
     gerarTabelaTaxa();
   </script>
 </html>
+
