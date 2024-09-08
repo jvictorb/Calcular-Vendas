@@ -311,13 +311,13 @@ button:hover {
             </tbody>
             <tfoot style="font-weight: bold;">
               <tr>
-                <td>Total colaborador: R$${Number(
+                <td style="color:blue">Total colaborador: R$${Number(
                   vendas
                     .filter((e) => e.id === iterator)
                     .map((e) => e.valorColaborador)
                     .reduce((accumulator, current) => accumulator + current, 0)
                 ).toFixed(2)}</td>
-                <td style="">Total loja: R$${Number(
+                <td style="color:blue">Total loja: R$${Number(
                   vendas
                     .filter((e) => e.id === iterator)
                     .map((e) => e.valorLoja)
@@ -396,7 +396,7 @@ button:hover {
                 </tbody>
                 <tfoot style="font-weight: bold;">
                   <tr>
-                    <td style="color: blue">Total colaborador: R$${Number(
+                    <td style="color:blue">Total colaborador: R$${Number(
                       vendas
                         .filter((e) => e.id === iterator)
                         .map((e) => e.valorColaborador)
@@ -405,7 +405,7 @@ button:hover {
                           0
                         )
                     ).toFixed(2)}</td>
-                    <td style="color: blue">Total loja: R$${Number(
+                    <td style="color:blue">Total loja: R$${Number(
                       vendas
                         .filter((e) => e.id === iterator)
                         .map((e) => e.valorLoja)
