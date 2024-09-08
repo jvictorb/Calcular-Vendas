@@ -8,26 +8,27 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <link rel="icon" href="./Icon.png" type="image/x-icon">
     <style>
-      header {
-    background-color: #f4f4f4;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    
+   
+
+body {
+
+  background-image: url('./background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
+.header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
+        .header img {
+            max-width: 400px;
+        }
 
-
-.logo2 {
-    text-align: center;
-    font-size: 30px;
-}
       .title {
         text-align: center;
       }
@@ -54,14 +55,14 @@
       }
     </style>
   </head>
-  <header>
-    <div class="header-container">
-        
-        <img src="./Logo2.png" alt="Imagem Centralizada" class="logo2">
-    </div>
-</header>
-  <body>
+  
     
+
+  <body>
+    <div class="header">
+        
+      <img src="./Logo2.png" alt="Imagem Centralizada" class="logo2">
+  </div>
     <section>
       <h2>Configuração de taxas</h2>
       <select id="taxas" style="margin-bottom: 20px">
