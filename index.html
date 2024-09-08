@@ -91,9 +91,9 @@ button:hover {
       <img src="./Logo2.png" alt="Imagem Centralizada" class="logo2">
   </div>
     <section>
-      <h2>Configuração de taxas</h2>
+      <h2>Configuração de Taxas</h2>
       <select id="taxas">
-        <option value="TAXALOJA">Taxa loja</option>
+        <option value="TAXALOJA">Taxa Loja</option>
         <option value="DEBITOUTROS">Débito Visa/Master</option>
         <option value="DEBITELO">Débito ELO</option>
         <option value="CREDITOUTROS">Crédito Visa/Master</option>
@@ -104,7 +104,7 @@ button:hover {
       <div id="tabelaTaxas"></div>
     </section>
     <section>
-      <h2>Adicionar colaborador/vendas</h2>
+      <h2>Adicionar Colaborador/Vendas</h2>
       <input id="namePerson" placeholder="Nome colaborador" />
       <button onclick="salvarProfissional()">Salvar</button>
     </section>
@@ -113,7 +113,7 @@ button:hover {
         <thead>
           <td>Nome</td>
           <td>Valor</td>
-          <td>Tipo pagamento</td>
+          <td>Forma de Pagamento</td>
           <td>Salvar</td>
           <td>Imprimir</td>
         </thead>
@@ -121,7 +121,7 @@ button:hover {
       </table>
     </section>
     <section>
-      <h2>Resultado de vendas</h2>
+      <h2>Resultado de Vendas</h2>
       <div id="resultRegisters"></div>
     </section>
   </body>
@@ -238,7 +238,7 @@ button:hover {
             <td>Débito ELO</td>
             <td>Crédito Visa/Master</td>
             <td>Crédito ELO</td>
-            <td>Taxa loja</td>
+            <td>Taxa Loja</td>
           </thead>
           <tbody>
             <tr>
@@ -269,17 +269,17 @@ button:hover {
         html += `
           <table border style="margin-bottom: 25px">
             <thead>
-              <td style="color:blue">Nome colaborador: ${iterator}</td>
+              <td style="color:blue">Nome Colaborador: ${iterator}</td>
             </thead>
             <tbody>
               <tr style="font-weight: bold;">
-                <td>Valor venda</td>
+                <td>Valor Venda</td>
                 <td>Forma de Pagamento</td>
-                <td>Taxa loja</td>
-                <td>Valor loja</td>
-                <td>Taxa do cartão</td>
-                <td>Valor taxa</td>
-                <td>Valor colaborador</td>
+                <td>Taxa Loja</td>
+                <td>Valor Loja</td>
+                <td>Taxa do Cartão</td>
+                <td>Valor Taxa</td>
+                <td>Valor Colaborador</td>
                 <td>Remover</td>
               </tr>`;
 
@@ -312,13 +312,13 @@ button:hover {
             </tbody>
             <tfoot style="font-weight: bold;">
               <tr>
-                <td style="color:blue">Total colaborador: R$${Number(
+                <td style="color:blue">Total Colaborador: R$${Number(
                   vendas
                     .filter((e) => e.id === iterator)
                     .map((e) => e.valorColaborador)
                     .reduce((accumulator, current) => accumulator + current, 0)
                 ).toFixed(2)}</td>
-                <td style="color:blue">Total loja: R$${Number(
+                <td style="color:blue">Total Loja: R$${Number(
                   vendas
                     .filter((e) => e.id === iterator)
                     .map((e) => e.valorLoja)
@@ -355,17 +355,17 @@ button:hover {
               }
             </style>
             <body>
-              <h1 style="text-align: center">Nome colaborador: ${iterator}</h1>
+              <h1 style="text-align: center">Nome Colaborador: ${iterator}</h1>
               <table border style="margin-top: 25px">
                 <tbody>
                   <tr style="font-weight: bold;">
-                    <td>Valor venda</td>
+                    <td>Valor Venda</td>
                     <td>Forma de Pagamento</td>
-                    <td>Taxa loja</td>
-                    <td>Valor loja</td>
-                    <td>Taxa do cartão</td>
-                    <td>Valor taxa</td>
-                    <td>Valor colaborador</td>
+                    <td>Taxa Loja</td>
+                    <td>Valor Loja</td>
+                    <td>Taxa do Cartão</td>
+                    <td>Valor Taxa</td>
+                    <td>Valor Colaborador</td>
                   </tr>`;
 
       for (const position in vendas) {
@@ -397,7 +397,7 @@ button:hover {
                 </tbody>
                 <tfoot style="font-weight: bold;">
                   <tr>
-                    <td style="color:blue">Total colaborador: R$${Number(
+                    <td style="color:blue">Total Colaborador: R$${Number(
                       vendas
                         .filter((e) => e.id === iterator)
                         .map((e) => e.valorColaborador)
@@ -406,7 +406,7 @@ button:hover {
                           0
                         )
                     ).toFixed(2)}</td>
-                    <td style="color:blue">Total loja: R$${Number(
+                    <td style="color:blue">Total Loja: R$${Number(
                       vendas
                         .filter((e) => e.id === iterator)
                         .map((e) => e.valorLoja)
