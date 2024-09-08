@@ -16,6 +16,17 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+button {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #f0f0f0;
 }
 
 .header {
@@ -53,19 +64,33 @@ body {
       .negativo {
         color: red;
       }
+
+      select {
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+
+      input {
+        border-radius: 4px;
+      }
+
+      option {
+        font-family: "Comic Sans MS", "Comic Sans", cursive;
+      }
     </style>
   </head>
   
     
 
   <body>
+    
     <div class="header">
         
       <img src="./Logo2.png" alt="Imagem Centralizada" class="logo2">
   </div>
     <section>
       <h2>Configuração de taxas</h2>
-      <select id="taxas" style="margin-bottom: 20px">
+      <select id="taxas">
         <option value="TAXALOJA">Taxa loja</option>
         <option value="DEBITOUTROS">Débito Visa/Master</option>
         <option value="DEBITELO">Débito ELO</option>
